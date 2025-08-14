@@ -1,0 +1,21 @@
+%% C4 Model - Level 3: Component Diagram
+%% Purpose: Decomposes a single container into its key internal code modules.
+%% Instructions: This should mirror the high-level structure of your codebase.
+
+graph TD
+    %% Define the boundary of the container you are detailing
+    subgraph [Your Main Application Container]
+        %% Define the Components based on your code's architecture
+        controller("<strong>[API Controller / Gateway]</strong><br>[Component]<br>Handles incoming requests, auth, validation.")
+
+        serviceLogic("<strong>[Business Logic Service]</strong><br>[Component]<br>Contains core business rules and orchestrates tasks.")
+
+        persistence("<strong>[Persistence Component]</strong><br>[Component]<br>Handles data access logic (e.g., a repository).")
+
+        extClient("<strong>[External API Client]</strong><br>[Component]<br>A client for communicating with a specific external service.")
+    end
+
+    %% Define internal interactions
+    controller -- "Uses" --> serviceLogic
+    serviceLogic -- "Uses" --> persistence
+    serviceLogic -- "Uses" --> extClient
