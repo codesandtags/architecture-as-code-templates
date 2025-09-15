@@ -1,0 +1,36 @@
+%% Flowchart
+%% Purpose: Shows a process flow or decision tree.
+%% Instructions: Replace placeholders with your actual process steps.
+
+flowchart TD
+    Start([Start]) --> Input{User Input}
+
+    Input -->|Valid| Validate[Validate Input]
+    Input -->|Invalid| Error[Show Error Message]
+
+    Validate --> Check{Check Business Rules}
+
+    Check -->|Pass| Process[Process Request]
+    Check -->|Fail| Reject[Reject Request]
+
+    Process --> Save[Save to Database]
+    Save --> Notify[Send Notification]
+
+    Notify --> Success[Return Success]
+
+    Error --> Log[Log Error]
+    Reject --> Log
+    Log --> End([End])
+
+    Success --> End
+
+    %% Styling
+    classDef startEnd fill:#e1f5fe
+    classDef process fill:#f3e5f5
+    classDef decision fill:#fff3e0
+    classDef error fill:#ffebee
+
+    class Start,End startEnd
+    class Validate,Process,Save,Notify,Success process
+    class Input,Check decision
+    class Error,Reject,Log error

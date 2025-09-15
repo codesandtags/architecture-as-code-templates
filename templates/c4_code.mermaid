@@ -1,0 +1,37 @@
+%% C4 Model - Level 4: Code Diagram
+%% Purpose: Shows how code is organized within a single component.
+%% Instructions: This should mirror the actual code structure and relationships.
+
+graph TD
+    %% Define the boundary of the component you are detailing
+    subgraph "UserService Component"
+        %% Define the Classes/Modules based on your code's architecture
+        userController("<strong>UserController</strong><br>[Class]<br>Handles HTTP requests for user operations")
+
+        userService("<strong>UserService</strong><br>[Class]<br>Contains business logic for user management")
+
+        userRepository("<strong>UserRepository</strong><br>[Class]<br>Handles data access for user entities")
+
+        userModel("<strong>User</strong><br>[Model/Entity]<br>Represents user data structure")
+
+        userValidator("<strong>UserValidator</strong><br>[Class]<br>Validates user input and business rules")
+
+        emailService("<strong>EmailService</strong><br>[Class]<br>Handles email notifications")
+
+        logger("<strong>Logger</strong><br>[Utility Class]<br>Handles logging and monitoring")
+    end
+
+    %% Define external dependencies
+    database[("Database<br>[External]")]
+    emailProvider[("Email Provider<br>[External]")]
+
+    %% Define the relationships
+    userController -- "uses" --> userService
+    userController -- "uses" --> userValidator
+    userService -- "uses" --> userRepository
+    userService -- "uses" --> emailService
+    userService -- "uses" --> logger
+    userRepository -- "uses" --> userModel
+    userRepository -- "queries" --> database
+    emailService -- "sends via" --> emailProvider
+    userValidator -- "validates" --> userModel

@@ -1,0 +1,40 @@
+%% Sequence Diagram
+%% Purpose: Shows the interaction between different actors/objects over time.
+%% Instructions: Replace placeholders with your actual actors and interactions.
+
+sequenceDiagram
+    participant U as User
+    participant W as Web App
+    participant A as API Gateway
+    participant S as User Service
+    participant D as Database
+    participant E as Email Service
+
+    %% User initiates action
+    U->>W: 1. Login request
+    W->>A: 2. POST /api/auth/login
+
+    %% API Gateway processes request
+    A->>A: 3. Validate request format
+    A->>S: 4. Forward to User Service
+
+    %% User Service handles authentication
+    S->>D: 5. Query user credentials
+    D-->>S: 6. Return user data
+
+    alt Valid credentials
+        S->>S: 7. Generate JWT token
+        S->>D: 8. Update last login
+        S-->>A: 9. Return success + token
+        A-->>W: 10. Return success response
+        W-->>U: 11. Redirect to dashboard
+
+        %% Optional: Send welcome email
+        S->>E: 12. Send welcome email
+        E-->>S: 13. Email sent confirmation
+
+    else Invalid credentials
+        S-->>A: 14. Return error
+        A-->>W: 15. Return error response
+        W-->>U: 16. Show error message
+    end

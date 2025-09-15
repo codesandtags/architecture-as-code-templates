@@ -1,30 +1,34 @@
-%% C4 Model - Level 2: Container Diagram
-%% Purpose: Decomposes your system into its major building blocks (applications, data stores).
-%% Instructions: Replace placeholders to reflect your service s architecture.
-
 graph TD
     %% Define the user interacting with the system
-    user("[User Role]")
+    user("[User Role]<br>[Person]")
 
     %% Define the boundary of your system
-    subgraph My Service
+    subgraph "My Service"
         %% Define the Containers within your system
-        api("<strong>[Your Main Application]</strong><br>[Container: Tech Stack]<br>e.g., Node.js, Express")
+        webApp("<strong>[Web Application]</strong><br>[Container: React/Vue/Angular]<br>Serves the user interface")
 
-        db("<strong>[Your Database]</strong><br>[Container: Database Tech]<br>e.g., PostgreSQL, MongoDB")
+        api("<strong>[API Server]</strong><br>[Container: Node.js/Python/Java]<br>Handles business logic and API endpoints")
 
-        cache("<strong>[Your Cache]</strong><br>[Container: Cache Tech]<br>e.g., Redis")
+        db("<strong>[Database]</strong><br>[Container: PostgreSQL/MySQL/MongoDB]<br>Stores persistent data")
 
-        worker("<strong>[Optional Worker]</strong><br>[Container: Tech Stack]<br>Handles background jobs.")
+        cache("<strong>[Cache Layer]</strong><br>[Container: Redis/Memcached]<br>Improves performance with caching")
+
+        worker("<strong>[Background Worker]</strong><br>[Container: Python/Node.js/Java]<br>Processes async tasks and jobs")
+
+        fileStorage("<strong>[File Storage]</strong><br>[Container: S3/MinIO/Local FS]<br>Stores files and static assets")
     end
 
-    %% Define an external system it uses
-    extSystem("[External System]")
+    %% Define external systems
+    extAPI("[External API]<br>[Software System]<br>e.g., Payment Gateway")
+    emailService("[Email Service]<br>[Software System]<br>e.g., SendGrid, AWS SES")
 
     %% Define the relationships
-    user -- "Makes API calls via [Protocol]" --> api
-    api -- "Reads/Writes using [Driver/ORM]" --> db
-    api -- "Caches data in" --> cache
-    api -- "Sends jobs to" --> worker
-    worker -- "Processes jobs from" --> api
-    api -- "Calls via [Protocol]" --> extSystem
+    user -- "Uses web interface<br>HTTPS" --> webApp
+    webApp -- "Makes API calls<br>HTTPS/REST" --> api
+    api -- "Reads/Writes data<br>SQL/NoSQL" --> db
+    api -- "Caches frequently accessed data<br>Redis Protocol" --> cache
+    api -- "Queues background jobs<br>Message Queue" --> worker
+    worker -- "Processes jobs from queue<br>Message Queue" --> api
+    api -- "Stores/Retrieves files<br>HTTP/S3 API" --> fileStorage
+    api -- "Makes API calls<br>HTTPS/REST" --> extAPI
+    worker -- "Sends emails<br>SMTP/API" --> emailService

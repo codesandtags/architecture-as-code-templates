@@ -1,0 +1,42 @@
+%% State Diagram
+%% Purpose: Shows the different states of an object and transitions between them.
+%% Instructions: Replace placeholders with your actual states and transitions.
+
+stateDiagram-v2
+    [*] --> Draft : Create Order
+
+    Draft --> Pending : Submit Order
+    Draft --> Cancelled : Cancel Order
+
+    Pending --> Confirmed : Payment Received
+    Pending --> Cancelled : Payment Failed
+    Pending --> Draft : Return to Draft
+
+    Confirmed --> Processing : Start Processing
+    Confirmed --> Cancelled : Cancel Order
+
+    Processing --> Shipped : Ship Order
+    Processing --> Cancelled : Cancel Order
+    Processing --> Confirmed : Return to Confirmed
+
+    Shipped --> Delivered : Mark Delivered
+    Shipped --> Returned : Process Return
+
+    Delivered --> [*] : Order Complete
+    Delivered --> Returned : Process Return
+
+    Returned --> Refunded : Process Refund
+    Refunded --> [*] : Order Complete
+
+    Cancelled --> [*] : Order Complete
+
+    %% Add notes for complex transitions
+    note right of Processing
+        Order is being prepared
+        for shipment
+    end note
+
+    note right of Returned
+        Customer initiated
+        return process
+    end note
